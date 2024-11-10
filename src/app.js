@@ -1,4 +1,5 @@
 const express = require("express");
+const { adminAuth, userAuth } = require("./middleware/auth");
 
 // create server
 const app = express();
@@ -24,6 +25,23 @@ app.get("/user/:userId", (req, res) => {
     });
 });
 
+// Middleware
+// Admin authentication - if error 401 else next will call the route handler. app.use so it can  be used in all routes like GET, POST...
+app.use("/admin", adminAuth);
+
+app.get("/admin/getAllData", (req, res) => {
+    res.send("Admin Data Sent.");
+});
+app.get("/admin/deleteUser", (req, res) => {
+    res.send("Deleted a User.");
+});
+
+// Another way to call middleware, it will first check user auth then only call request handler
+app.get("/user/data", userAuth, (req, res) => {
+    res.send("User Data sent.");
+})
+
+/*
 // trying multiple route handlers
 // first way
 app.use("/route", [(req, res, next) => {
@@ -50,6 +68,7 @@ app.use("/route2", (req, res, next) => {
     console.log("Route 2");
     res.send("Route 2");
 });
+*/
 
 // listen to requests to port 3000
 app.listen(3000, () => {
