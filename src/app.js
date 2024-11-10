@@ -41,6 +41,17 @@ app.get("/user/data", userAuth, (req, res) => {
     res.send("User Data sent.");
 })
 
+// Error handling
+app.get("/data",  (req, res) => {
+    throw new Error("Error");
+    res.send("Data  Sent");
+});
+
+// Wildcard Error Handler - Ideal way to handle errors is try catch but it is gracious way to handle all unexpected error
+app.use("/", (err, req, res, next) => {
+    res.status(500).send("Something went wrong!")
+});
+
 /*
 // trying multiple route handlers
 // first way
