@@ -24,6 +24,22 @@ app.get("/user/:userId", (req, res) => {
     });
 });
 
+// trying multiple route handlers
+app.use("/route", [(req, res, next) => {
+    console.log("Route 1");
+    // res.send("Route 1");
+    next();
+},
+(req, res, next) => {
+    console.log("Route 2");
+    // res.send("Route 2");
+    next();
+}],
+(req, res) => {
+    console.log("Route 3");
+    res.send("Route 3");
+}
+);
 
 // listen to requests to port 3000
 app.listen(3000, () => {
