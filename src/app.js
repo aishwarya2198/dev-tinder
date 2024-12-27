@@ -64,16 +64,19 @@ app.delete("/user", async (req, res) => {
 
 // Update a user
 app.patch("/user", async (req, res) => {
-    const data = req.body;
-    const userId = data.userId;
-    try{
-        const user = await User.findByIdAndUpdate(userId, data, {returnDocument: "after"});
-        console.log(user);
-        res.send("User updated successfully.");
-    }catch(err){
-        res.status(400).send("Something went wrong!");
-    }
-})
+  const data = req.body;
+  const userId = data.userId;
+  try {
+    const user = await User.findByIdAndUpdate(userId, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    console.log(user);
+    res.send("User updated successfully.");
+  } catch (err) {
+    res.status(400).send("UPDATE FAILED:"+err.message);
+  }
+});
 
 // Connecting to db, if success then listening to port 3000
 connectDB().then(() => {
